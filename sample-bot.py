@@ -152,6 +152,8 @@ class trades_histories:
 
             
 
+def fst(xs):
+    return [x[0] for x in xs]
 
 class trade_history:
     def __init__(self):
@@ -170,7 +172,7 @@ class trade_history:
         return max(self.trade)
 
     def get_delta(self):
-        return max(self.trade) - min(self.trade)
+        return max(fst(self.trade)) - min(fst(self.trade))
 
     def predict_sell(self):
         return self.get_wavg() + 0.1 * self.get_delta()
@@ -183,7 +185,6 @@ def wavg(xs):
     weight = sum(map(lambda x : x[1], xs))
     suma = sum(map(lambda x : x[0] * x[1], xs))
     return 1.0 * suma / weight
-    
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
