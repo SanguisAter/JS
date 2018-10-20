@@ -10,7 +10,8 @@
 import sys
 import socket
 import json
-from collections inport defaultdict
+from random import randrange
+from collections import defaultdict
 
 # ~~~~~============== CONFIGURATION  ==============~~~~~
 # replace REPLACEME with your team name!
@@ -34,7 +35,7 @@ __ID = 1
 def next():
     global __ID
     __ID += 1
-    return __ID
+    return randrange(2**16)
 
 # ~~~~~============== NETWORKING CODE ==============~~~~~
 def connect():
@@ -76,7 +77,7 @@ def getoutid(request):
 
 
 def main():
-    outd = defaltdict(lambda : False)
+    outd = defaultdict(lambda : False)
     write_to_exchange(exchange, {"type": "hello", "team": team_name.upper()})
     hello_from_exchange = read_from_exchange(exchange)
     # A common mistake people make is to call write_to_exchange() > 1
@@ -89,10 +90,10 @@ def main():
 
     while True:
         if outd[sell_id]:
-            sell_id = sell("BOND",1001,10)
+            sell_id = sell("BOND",1005,10)
             print("sell", sell_id)
         if outd[buy_id]:
-            buy_id = buy("BOND",999,10)
+            buy_id = buy("BOND",995,10)
             print("buy", buy_id)
         x = read_from_exchange(exchange)
         if getoutid(x):
@@ -104,5 +105,3 @@ def main():
 if __name__ == "__main__":
     exchange = connect()
     main()
-
-# wpedrak test
