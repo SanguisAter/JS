@@ -173,15 +173,15 @@ class trade_history:
         return max(self.trade) - min(self.trade)
 
     def predict_sell(self):
-        return self.wavg() + 0.1 * self.delta()
+        return self.get_wavg() + 0.1 * self.get_delta()
 
     def predict_buy(self):
-        return self.wavg() - 0.1 * self.delta()
+        return self.get_wavg() - 0.1 * self.get_delta()
 
 
 def wavg(xs):
-    weight = sum(map(lambda x, y : y, xs))
-    suma = sum(map(lambda x, y : x * y, xs))
+    weight = sum(map(lambda x : x[1], xs))
+    suma = sum(map(lambda x : x[0] * x[1], xs))
     return 1.0 * suma / weight
     
 
