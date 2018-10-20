@@ -100,28 +100,57 @@ class trades_histories:
         self.securities[msg["symbol"]].add(msg)
 
     def wavg(self):
-        print("wavg")
+        ret = {}
         for name in self.names:
-            a = self.securities[name].wavg()
-            print(name, a)
-
-    def min(self):
-        print("min")
-        for name in self.names:
-            a = self.securities[name].min()
-            print(name, a)
+            ret[name] = self.securities[name].wavg()
+        return ret
 
     def max(self):
-        print("max")
+        ret = {}
         for name in self.names:
-            a = self.securities[name].max()
-            print(name, a)
+            ret[name] = self.securities[name].max()
+        return ret
+
+    def min(self):
+        ret = {}
+        for name in self.names:
+            ret[name] = self.securities[name].min()
+        return ret
 
     def delta(self):
-        print("delta")
+        ret = {}
         for name in self.names:
-            a = self.securities[name].delta()
-            print(name, a)
+            ret[name] = self.securities[name].delta()
+        return ret
+
+    def predict_sell(self):
+        ret = {}
+        for name in self.names:
+            ret[name] = self.securities[name].predict_sell()
+        return ret
+
+    def predict_buy(self):
+        ret = {}
+        for name in self.names:
+            ret[name] = self.securities[name].predict_buy()
+        return ret
+
+    def print_all(self):
+        print("wavg", self.wavg())
+        print("#######################################")
+        print("min", self.min())
+        print("#######################################")
+        print("max", self.max())
+        print("#######################################")
+        print("delta", self.delta())
+        print("#######################################")
+        print("sell", self.predict_sell())
+        print("#######################################")
+        print("buy", self.predict_buy())
+        print("#######################################")
+
+
+            
 
 
 class trade_history:
@@ -142,6 +171,12 @@ class trade_history:
 
     def get_delta(self):
         return max(self.trade) - min(self.trade)
+
+    def predict_sell(self):
+        return self.wavg() + 0.1 * self.delta()
+
+    def predict_buy(self)
+        return self.wavg() - 0.1 * self.delta()
 
 
 def wavg(xs):
@@ -191,4 +226,8 @@ def main():
 
 if __name__ == "__main__":
     exchange = connect()
-    main()
+    try:
+        main()
+    except:
+        histories.print_all()
+    histories.print_all()
