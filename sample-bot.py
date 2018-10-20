@@ -71,7 +71,7 @@ def getoutid(request):
         False
 
 
-def bond_trade(sell_ids, buy_ids):
+def bond_trade(sell_id, buy_id):
     global outd
     if outd[sell_id]:
         sell_id = sell("BOND",1001,1)
@@ -84,11 +84,11 @@ def bond_trade(sell_ids, buy_ids):
 def vale_trade(sell_id, buy_id):
     global outd
     if outd[sell_id]:
-        price = histories.securities[VALE].predict_sell()
+        price = histories.securities["VALE"].predict_sell()
         sell_id = sell("VALE",price,5)
         #print("sell", sell_id)
     if outd[buy_id]:
-        price = histories.securities[VALE].predict_buy()
+        price = histories.securities["VALE"].predict_buy()
         buy_id = buy("VALE",price,5)
         #print("buy", buy_id)
     return sell_id, buy_id
@@ -217,11 +217,15 @@ def main():
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
     bond_sell_id = sell("BOND",1001,1)
     bond_buy_id = buy("BOND",999,1)
-
+    vale_sell_id, vale_buy_id = next(), next()
+    outd[vale_sell_id] = True 
+    outd[vale_buy_id] = True
     counter = 0
 
     while True:
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
+        if len(histories.securities["VALBZ"].trade) > 20:
+            vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
         msg = read_from_exchange(exchange)
 
         if is_trade(msg):
@@ -230,10 +234,7 @@ def main():
             if counter % 100 == 0:
                 print_trade(msg)
                 print(histories.securities["VALBZ"].get_wavg())
-                
 
-        if len(histories.securities["VALBZ"].trade) > 20:
-            
 
 
         # clearing IDs
