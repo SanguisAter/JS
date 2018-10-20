@@ -169,6 +169,8 @@ class trades_histories:
         for name in self.names:
             if name == "XLF":
                 ret[name] = 3 * ret["BOND"] + 2 * ret["GS"] + 3 * ret["MS"] + 2 * ret["WFC"] / 10
+            if name == "VALBZ":
+                ret[name] = ret["VAL"] + 3 * ret["VALBZ"] / 4
             else:
                 ret[name] = self.securities[name].predict_sell()
         return ret
@@ -241,6 +243,7 @@ SELL = "SELL"
 
 histories = trades_histories()
 bot = trading_bot("XLF")
+bot_valbz = trading_bot("VALBZ")
 
 def main():
     
@@ -262,6 +265,7 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         if len(histories.securities["VALBZ"].trade) > 20:
             vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
+            bot_valbz.trade()
         if len(histories.securities["XLF"].trade) > 20:
             bot.trade()
 
