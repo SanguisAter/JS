@@ -104,3 +104,5 @@ def main():
 if __name__ == "__main__":
     exchange = connect()
     main()
+
+# wpedrak test
