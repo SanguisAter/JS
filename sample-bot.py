@@ -86,11 +86,11 @@ def vale_trade(sell_id, buy_id):
     if outd[sell_id]:
         price = histories.securities["VALE"].predict_sell()
         sell_id = sell("VALE",price,5)
-        #print("sell", sell_id)
+        print("VALE sell", sell_id)
     if outd[buy_id]:
         price = histories.securities["VALE"].predict_buy()
         buy_id = buy("VALE",price,5)
-        #print("buy", buy_id)
+        print("VALE buy", buy_id)
     return sell_id, buy_id
 
 def is_trade(msg):
