@@ -75,10 +75,10 @@ def bond_trade(sell_id, buy_id):
     global outd
     if outd[sell_id]:
         sell_id = sell("BOND",1001,1)
-        print("sell", sell_id)
+        #print("sell", sell_id)
     if outd[buy_id]:
         buy_id = buy("BOND",999,1)
-        print("buy", buy_id)
+        #print("buy", buy_id)
     return sell_id, buy_id
 
 
@@ -170,13 +170,18 @@ def main():
     bond_sell_id = sell("BOND",1001,1)
     bond_buy_id = buy("BOND",999,1)
 
+    counter = 0
+
     while True:
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         msg = read_from_exchange(exchange)
 
         if is_trade(msg):
+            counter += 1
             histories.add(msg)
-            print_trade(msg)
+            if counter % 1000 == 0:
+                print_trade(msg)
+                
 
         if len(histories.securities["VALBZ"].trade) > 20:
             pass
