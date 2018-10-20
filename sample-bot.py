@@ -102,25 +102,25 @@ class trades_histories:
     def wavg(self):
         ret = {}
         for name in self.names:
-            ret[name] = self.securities[name].wavg()
+            ret[name] = self.securities[name].get_wavg()
         return ret
 
     def max(self):
         ret = {}
         for name in self.names:
-            ret[name] = self.securities[name].max()
+            ret[name] = self.securities[name].get_max()
         return ret
 
     def min(self):
         ret = {}
         for name in self.names:
-            ret[name] = self.securities[name].min()
+            ret[name] = self.securities[name].get_min()
         return ret
 
     def delta(self):
         ret = {}
         for name in self.names:
-            ret[name] = self.securities[name].delta()
+            ret[name] = self.securities[name].get_delta()
         return ret
 
     def predict_sell(self):
