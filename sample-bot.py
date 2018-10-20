@@ -5,7 +5,7 @@
 # 2) Change permissions: chmod +x bot.py
 # 3) Run in loop: while true; do ./bot.py; sleep 1; done
 
-#from __future__ import print_function
+#f  rom __future__ import print_function
 
 import sys
 import socket
