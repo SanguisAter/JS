@@ -136,7 +136,7 @@ class trades_histories:
         self.securities = {}
         self.names = ["BOND", "GS", "MS", "WFC", "VALBZ", "VALE", "XLF"]
         for name in self.names:
-            self.securities[name] = trade_history()
+            self.securities[name] = trade_history(name)
     def add(self, msg):
         self.securities[msg["symbol"]].add(msg)
 
@@ -206,8 +206,9 @@ def fst(xs):
     return [x[0] for x in xs]
 
 class trade_history:
-    def __init__(self):
+    def __init__(self, symbol):
         self.trade = []
+        self.symbol = symbol
 
     def add(self, msg):
         self.trade += [(msg["price"], msg["size"]) ]
@@ -225,10 +226,13 @@ class trade_history:
         return max(fst(self.trade)) - min(fst(self.trade))
 
     def predict_sell(self):
-        return self.get_wavg() + 0.1 * self.get_delta()
+        mult = 0.1
+        if self.symbol in ["MS", "GS", "WFC"]:
+            mult = 0.01
+        return self.get_wavg() + mult * self.get_delta()
 
     def predict_buy(self):
-        return self.get_wavg() - 0.1 * self.get_delta()
+        return self.get_wavg() - mult * self.get_delta()
 
 
 def wavg(xs):
@@ -244,6 +248,9 @@ SELL = "SELL"
 histories = trades_histories()
 bot = trading_bot("XLF")
 bot_valbz = trading_bot("VALBZ")
+bot_ms = trading_bot("MS")
+bot_gs = trading_bot("GS")
+bot_wfc = trading_bot("WFC")
 
 def main():
     
@@ -262,12 +269,18 @@ def main():
     counter = 0
 
     while True:
-        bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
+        #bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         if len(histories.securities["VALBZ"].trade) > 20:
-            vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
-            bot_valbz.trade()
+            #vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
+            #bot_valbz.trade()
         if len(histories.securities["XLF"].trade) > 20:
             bot.trade()
+        if len(histories.securities["MS"].trade) > 20:
+            bot_ms.trade()
+        if len(histories.securities["GS"].trade) > 20:
+            bot_gs.trade()
+        if len(histories.securities["WFC"].trade) > 20:
+            bot_wfc.trade()
 
 
         for i in range(10):
