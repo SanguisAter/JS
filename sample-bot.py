@@ -100,7 +100,7 @@ class trades_histories:
         self.securities[msg["symbol"]].add(msg)
 
     def wavg(self):
-        print("sell_wavg", "buy_wavg")
+        print("wavg")
         for name in self.names:
             a = self.securities[name].wavg()
             print(name, a)
@@ -108,18 +108,19 @@ class trades_histories:
 
 class trade_history:
     def __init__(self):
-        self.buys = []
-        self.sells = []
+        self.trade = []
 
     def add(self, msg):
-        if msg["dir"] == "buy":
-            self.buy += [(msg["price"], msg["size"]) ]
-
-        else:
-            self.sell += [(msg["price"], msg["size"])]
+        self.trade += [(msg["price"], msg["size"]) ]
 
     def get_wavg(self):
-        return wavg(self.sells), wavg(self.buys)
+        return wavg(self.trade)
+
+    def get_min(self):
+        return min(self.trade)
+
+    def get_max(self):
+        return max(self.trade)
 
 
 def wavg(xs):
@@ -127,11 +128,6 @@ def wavg(xs):
     suma = sum(map(lambda x, y : x * y, xs))
     return 1.0 * suma / weight
     
-
-
-=======
-
->>>>>>> 6c2e057d6182baad62533d6b3ddf1d4deabb6769
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
