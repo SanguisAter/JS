@@ -132,7 +132,7 @@ class trading_bot:
 
 
 def count_alive(ids):
-    return sum(map(lambda x : outd[x] != True), ids)
+    return sum(map(lambda x : outd[x] != True, ids))
 
 class trades_histories:
     def __init__(self):
@@ -299,7 +299,7 @@ def main():
             # clearing IDs
             if getoutid(msg):
                 for key in outd:
-                    if outd[key] != True
+                    if outd[key] != True:
                         outd[key] += 1
                 outd[getoutid(msg)] = True
 
