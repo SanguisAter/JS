@@ -19,7 +19,6 @@ team_name="FLYINGCIRCUS"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
 test_mode = "-test" in sys.argv
-print(sys.argv)
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
@@ -87,12 +86,9 @@ def is_trade(msg):
     return msg["type"] == "trade"
 
 def print_trade(msg):
-    if mgs["symbol"] in ["VALE", "VALBZ"]:
+    if mgs["symbol"] in ["VALE", "VALBZ","BOND"]:
         print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
-    #if mgs["symbol"] ==
 
-
-class trade_history
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
