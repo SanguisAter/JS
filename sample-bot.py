@@ -215,12 +215,21 @@ class trade_history:
 
     def get_min(self):
         return min(self.trade)
+    
+    def get_almost_min(self):
+        return min(self.trade[-100:])
+    
+    def get_almost_max(self):
+        return max(self.trade[-100:])
 
     def get_max(self):
         return max(self.trade)
 
     def get_delta(self):
         return max(fst(self.trade)) - min(fst(self.trade))
+    
+    def get_current_delta(self):
+        return max(fst(self.trade[-100:])) - min(fst(self.trade[-100:]))
 
     def predict_sell(self):
         return self.get_wavg() + 0.1 * self.get_delta()
