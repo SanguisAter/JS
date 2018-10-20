@@ -30,7 +30,7 @@ prod_exchange_hostname="production"
 
 port=25000 + (test_exchange_index if test_mode else 0)
 exchange_hostname = "test-exch-" + team_name if test_mode else prod_exchange_hostname
-
+outd = defaultdict(lambda : False)
 
 __ID = 1
 def next():
@@ -88,13 +88,14 @@ def is_trade(msg):
 def print_trade(msg):
     if mgs["symbol"] in ["VALE", "VALBZ"]:
         print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
+    #if mgs["symbol"] ==
 
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
 
 def main():
-    outd = defaultdict(lambda : False)
+    
     write_to_exchange(exchange, {"type": "hello", "team": team_name.upper()})
     hello_from_exchange = read_from_exchange(exchange)
     # A common mistake people make is to call write_to_exchange() > 1
