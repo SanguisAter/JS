@@ -87,7 +87,9 @@ def is_trade(msg):
 
 def print_trade(msg):
     if msg["symbol"] in ["VALE", "VALBZ","BOND"]:
-        print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
+        print (msg)
+    # if msg["symbol"] in ["VALE", "VALBZ","BOND"]:
+    #     print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
 
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
