@@ -70,8 +70,24 @@ def getoutid(request):
     else:
         False
 
-    
 
+def bond_trade(sell_id, buy_id):
+    global outd
+    if outd[sell_id]:
+        sell_id = sell("BOND",1001,20)
+        print("sell", sell_id)
+    if outd[buy_id]:
+        buy_id = buy("BOND",999,20)
+        print("buy", buy_id)
+    return sell_id, buy_id
+
+
+def is_trade(msg):
+    return msg["type"] == "trade"
+
+def print_trade(msg):
+    if mgs["symbol"] in ["VALE", "VALBZ"]:
+        print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
 
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
@@ -86,19 +102,19 @@ def main():
     # Since many write messages generate marketdata, this will cause an
     # exponential explosion in pending messages. Please, don't do that!
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
-    sell_id = sell("BOND",1001,20)
-    buy_id = buy("BOND",999,20)
+    bond_sell_id = sell("BOND",1001,20)
+    bond_buy_id = buy("BOND",999,20)
 
     while True:
-        if outd[sell_id]:
-            sell_id = sell("BOND",1001,20)
-            print("sell", sell_id)
-        if outd[buy_id]:
-            buy_id = buy("BOND",999,20)
-            print("buy", buy_id)
-        x = read_from_exchange(exchange)
-        if getoutid(x):
-            outd[getoutid(x)] = True
+        bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
+        message = read_from_exchange(exchange)
+
+        if is_trade(msg):
+            print_trade(msg)
+
+        # clearing IDs
+        if getoutid(message):
+            outd[getoutid(message)] = True
 
 
 
