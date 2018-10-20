@@ -71,7 +71,7 @@ def getoutid(request):
         False
 
 
-def bond_trade(sell_id, buy_id):
+def bond_trade(sell_ids, buy_ids):
     global outd
     if outd[sell_id]:
         sell_id = sell("BOND",1001,1)
@@ -81,6 +81,17 @@ def bond_trade(sell_id, buy_id):
         #print("buy", buy_id)
     return sell_id, buy_id
 
+def vale_trade(sell_id, buy_id):
+    global outd
+    if outd[sell_id]:
+        price = histories.securities[VALE].predict_sell()
+        sell_id = sell("VALE",price,5)
+        #print("sell", sell_id)
+    if outd[buy_id]:
+        price = histories.securities[VALE].predict_buy()
+        buy_id = buy("VALE",price,5)
+        #print("buy", buy_id)
+    return sell_id, buy_id
 
 def is_trade(msg):
     return msg["type"] == "trade"
@@ -128,6 +139,7 @@ class trades_histories:
         for name in self.names:
             ret[name] = self.securities[name].predict_sell()
         return ret
+
 
     def predict_buy(self):
         ret = {}
@@ -184,7 +196,6 @@ def wavg(xs):
     suma = sum(map(lambda x : x[0] * x[1], xs))
     return 1.0 * suma / weight
     
-
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
 
@@ -220,7 +231,7 @@ def main():
                 
 
         if len(histories.securities["VALBZ"].trade) > 20:
-            pass
+            
 
 
         # clearing IDs
