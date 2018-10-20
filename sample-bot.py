@@ -107,15 +107,16 @@ class trading_bot:
         self.symbol = symbol
         self.sell_ids = []
         self.buy_ids = []
+        self.limit = 5
 
 
-    def trade(symbol):
-        global outd
-        if outd[sell_id]:
+    def trade():
+        symbol = self.symbol
+        if count_alive(self.sell_ids) > self.limit:
             price = histories.securities[symbol].predict_sell()
             sell_id = sell(symbol,price,5)
             #print("sell", sell_id)
-        if outd[buy_id]:
+        if count_alive(self.buy_ids) > self.limit
             price = histories.securities[symbol].predict_buy()
             buy_id = buy(symbol,price,5)
             #print("buy", buy_id)
@@ -229,6 +230,7 @@ BUY = "BUY"
 SELL = "SELL"
 
 histories = trades_histories()
+bot = trading_bot("MS")
 
 def main():
     
@@ -250,20 +252,19 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         if len(histories.securities["VALBZ"].trade) > 20:
             vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
-        msg = read_from_exchange(exchange)
-
-        if is_trade(msg):
-            counter += 1
-            histories.add(msg)
-            if counter % 100 == 0:
-                print_trade(msg)
-                print(histories.securities["VALBZ"].get_wavg())
+        if len(histories.securities["MS"].trade) > 20:
+            bot.trade()
 
 
+        for i in range(10):
+            msg = read_from_exchange(exchange)
 
-        # clearing IDs
-        if getoutid(msg):
-            outd[getoutid(msg)] = True
+            if is_trade(msg):
+                histories.add(msg)
+
+            # clearing IDs
+            if getoutid(msg):
+                outd[getoutid(msg)] = True
 
 
 
