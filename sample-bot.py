@@ -258,7 +258,7 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         if len(histories.securities["VALBZ"].trade) > 20:
             vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
-        if len(histories.securities["MS"].trade) > 20:
+        if len(histories.securities["XLF"].trade) > 20:
             bot.trade()
 
 
