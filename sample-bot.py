@@ -112,8 +112,8 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         message = read_from_exchange(exchange)
 
-        if is_trade(msg):
-            print_trade(msg)
+        if is_trade(message):
+            print_trade(message)
 
         # clearing IDs
         if getoutid(message):
