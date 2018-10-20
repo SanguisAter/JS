@@ -105,6 +105,9 @@ class trades_histories:
             a = self.securities[name].wavg()
             print(name, a)
 
+    def min(self):
+        pass
+
 
 class trade_history:
     def __init__(self):
@@ -151,8 +154,8 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         msg = read_from_exchange(exchange)
 
-        if is_trade(message):
-            print_trade(message)
+        if is_trade(msg):
+            print_trade(msg)
 
         # clearing IDs
         if getoutid(msg):
