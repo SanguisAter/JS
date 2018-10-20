@@ -53,6 +53,7 @@ def read_from_exchange(exchange):
 
 def sell(symbol, price, size):
     ID = next()
+    price = int(price)
     request = {"type": "add", "order_id": ID, "symbol": symbol, "dir": "SELL", "price": price, "size": size}
     write_to_exchange(exchange,request)
     return ID
@@ -60,6 +61,7 @@ def sell(symbol, price, size):
 
 def buy(symbol, price, size):
     ID = next()
+    price = int(price)
     request = {"type": "add", "order_id": ID, "symbol": symbol, "dir": "BUY", "price": price, "size": size}
     write_to_exchange(exchange,request)
     return ID
