@@ -101,19 +101,21 @@ def print_trade(msg):
         print(msg["symbol"], msg["price"], msg["size"])
 
 class trading_bot:
-    def __init__:
+    def __init__(self, symbol):
+        self.symbol = symbol
         self.sell_ids = []
         self.buy_ids = []
 
-    def vale_trade():
+
+    def trade(symbol):
         global outd
         if outd[sell_id]:
-            price = histories.securities[VALE].predict_sell()
-            sell_id = sell("VALE",price,5)
+            price = histories.securities[symbol].predict_sell()
+            sell_id = sell(symbol,price,5)
             #print("sell", sell_id)
         if outd[buy_id]:
-            price = histories.securities[VALE].predict_buy()
-            buy_id = buy("VALE",price,5)
+            price = histories.securities[symbol].predict_buy()
+            buy_id = buy(symbol,price,5)
             #print("buy", buy_id)
         self.sell_ids += [sell_id]
         self.buy_ids += [buy_id]
@@ -159,14 +161,14 @@ class trades_histories:
         ret = {}
         for name in self.names:
             ret[name] = self.securities[name].predict_sell()
-        return ret
+        return int(ret)
 
 
     def predict_buy(self):
         ret = {}
         for name in self.names:
             ret[name] = self.securities[name].predict_buy()
-        return ret
+        return int(ret)
 
     def print_all(self):
         print("wavg", self.wavg())
