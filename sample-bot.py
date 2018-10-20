@@ -106,7 +106,22 @@ class trades_histories:
             print(name, a)
 
     def min(self):
-        pass
+        print("min")
+        for name in self.names:
+            a = self.securities[name].min()
+            print(name, a)
+
+    def max(self):
+        print("max")
+        for name in self.names:
+            a = self.securities[name].max()
+            print(name, a)
+
+    def delta(self):
+        print("delta")
+        for name in self.names:
+            a = self.securities[name].delta()
+            print(name, a)
 
 
 class trade_history:
@@ -125,6 +140,9 @@ class trade_history:
     def get_max(self):
         return max(self.trade)
 
+    def get_delta(self):
+        return max(self.trade) - min(self.trade)
+
 
 def wavg(xs):
     weight = sum(map(lambda x, y : y, xs))
@@ -137,6 +155,8 @@ def wavg(xs):
 
 BUY = "BUY"
 SELL = "SELL"
+
+histories = trades_histories()
 
 def main():
     
@@ -155,7 +175,12 @@ def main():
         msg = read_from_exchange(exchange)
 
         if is_trade(msg):
+            histories.add(msg)
             print_trade(msg)
+
+        if len(histories.securities["VALBZ"].trades) > 20:
+            pass
+
 
         # clearing IDs
         if getoutid(msg):
