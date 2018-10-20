@@ -68,6 +68,10 @@ def buy(symbol, price, size):
 
 def getoutid(request):
     if request["type"] in ["out", "reject"]:
+        if request["type"] in ["reject"]:
+            print(request)
+            # while True:
+            #     pass
         return request["order_id"]
     else:
         False
@@ -110,22 +114,22 @@ class trading_bot:
         self.limit = 5
 
 
-    def trade():
+    def trade(self):
         symbol = self.symbol
-        if count_alive(self.sell_ids) > self.limit:
+        if count_alive(self.sell_ids) < self.limit:
             price = histories.securities[symbol].predict_sell()
             sell_id = sell(symbol,price,5)
-            #print("sell", sell_id)
-        if count_alive(self.buy_ids) > self.limit
+            # print("sell", sell_id)
+            self.sell_ids += [sell_id]
+        if count_alive(self.buy_ids) < self.limit:
             price = histories.securities[symbol].predict_buy()
             buy_id = buy(symbol,price,5)
-            #print("buy", buy_id)
-        self.sell_ids += [sell_id]
-        self.buy_ids += [buy_id]
+            # print("buy", buy_id)
+            self.buy_ids += [buy_id]
 
 
 def count_alive(ids):
-    return sum(map(lambda x : outd[x] == False))
+    return sum(map(lambda x : outd[x] == False, ids))
 
 class trades_histories:
     def __init__(self):
@@ -253,6 +257,7 @@ def main():
         if len(histories.securities["VALBZ"].trade) > 20:
             vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
         if len(histories.securities["MS"].trade) > 20:
+            # print("ping")
             bot.trade()
 
 
