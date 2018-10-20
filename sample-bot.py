@@ -30,7 +30,7 @@ prod_exchange_hostname="production"
 
 port=25000 + (test_exchange_index if test_mode else 0)
 exchange_hostname = "test-exch-" + team_name if test_mode else prod_exchange_hostname
-outd = defaultdict(lambda : False)
+outd = defaultdict(lambda : 0)
 
 __ID = 1
 def next():
@@ -66,6 +66,9 @@ def buy(symbol, price, size):
     write_to_exchange(exchange,request)
     return ID
 
+def cancel(ID):
+    request = {"type" : "cancel", "order_id" : ID}
+
 def getoutid(request):
     if request["type"] in ["out", "reject"]:
         return request["order_id"]
@@ -75,21 +78,21 @@ def getoutid(request):
 
 def bond_trade(sell_id, buy_id):
     global outd
-    if outd[sell_id]:
+    if outd[sell_id] == True:
         sell_id = sell("BOND",1001,1)
         #print("sell", sell_id)
-    if outd[buy_id]:
+    if outd[buy_id] == True:
         buy_id = buy("BOND",999,1)
         #print("buy", buy_id)
     return sell_id, buy_id
 
 def vale_trade(sell_id, buy_id):
     global outd
-    if outd[sell_id]:
+    if outd[sell_id] == True:
         price = histories.securities["VALE"].predict_sell()
         sell_id = sell("VALE",price,5)
         print("VALE sell", sell_id)
-    if outd[buy_id]:
+    if outd[buy_id] == True:
         price = histories.securities["VALE"].predict_buy()
         buy_id = buy("VALE",price,5)
         print("VALE buy", buy_id)
@@ -125,7 +128,7 @@ class trading_bot:
 
 
 def count_alive(ids):
-    return sum(map(lambda x : outd[x] == False))
+    return sum(map(lambda x : outd[x] != True))
 
 class trades_histories:
     def __init__(self):
@@ -179,6 +182,9 @@ class trades_histories:
                 ret[name] = self.securities[name].predict_buy()
         return ret
 
+    def size(self):
+        return sum(map(lambda name: self.securities[name].size() ,self.names))
+
     def print_all(self):
         print("wavg", self.wavg())
         print("#######################################")
@@ -224,6 +230,9 @@ class trade_history:
     def predict_buy(self):
         return self.get_wavg() - 0.1 * self.get_delta()
 
+    def size(self):
+        return len(self.trade)
+
 
 def wavg(xs):
     weight = sum(map(lambda x : x[1], xs))
@@ -261,16 +270,27 @@ def main():
         if len(histories.securities["XLF"].trade) > 20:
             bot.trade()
 
+        
 
         for i in range(10):
             msg = read_from_exchange(exchange)
+            if histories.size() % 100 == 0:
+                for ID in outd:
+                    if outd[ID] > 100:
+                        cancel(ID)
+
 
             if is_trade(msg):
                 histories.add(msg)
 
             # clearing IDs
             if getoutid(msg):
+                for key in outd:
+                    if outd[key] != True
+                        outd[key] += 1
                 outd[getoutid(msg)] = True
+
+            #clearing old ids
 
 
 
