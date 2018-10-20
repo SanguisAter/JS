@@ -87,7 +87,7 @@ def is_trade(msg):
 
 def print_trade(msg):
     if msg["symbol"] in ["VALE", "VALBZ","BOND"]:
-        print (msg)
+        print(msg["symbol"], msg["price"], msg["size"])
 
 
 class trades_histories:
