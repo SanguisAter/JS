@@ -86,15 +86,15 @@ def main():
     # Since many write messages generate marketdata, this will cause an
     # exponential explosion in pending messages. Please, don't do that!
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
-    sell_id = sell("BOND",1001,20)
-    buy_id = buy("BOND",999,20)
+    sell_id = sell("BOND",1001,1)
+    buy_id = buy("BOND",999,1)
 
     while True:
         if outd[sell_id]:
-            sell_id = sell("BOND",1001,20)
+            sell_id = sell("BOND",1001,1)
             print("sell", sell_id)
         if outd[buy_id]:
-            buy_id = buy("BOND",999,20)
+            buy_id = buy("BOND",999,1)
             print("buy", buy_id)
         x = read_from_exchange(exchange)
         if getoutid(x):
