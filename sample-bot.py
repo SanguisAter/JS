@@ -66,7 +66,7 @@ def buy(symbol, price, size):
     return ID
 
 def getoutid(request):
-    if request["type"] == "out":
+    if request["type"] in ["out", "reject"]:
         return request["order_id"]
     else:
         False
@@ -75,10 +75,10 @@ def getoutid(request):
 def bond_trade(sell_id, buy_id):
     global outd
     if outd[sell_id]:
-        sell_id = sell("BOND",1001,20)
+        sell_id = sell("BOND",1001,1)
         print("sell", sell_id)
     if outd[buy_id]:
-        buy_id = buy("BOND",999,20)
+        buy_id = buy("BOND",999,1)
         print("buy", buy_id)
     return sell_id, buy_id
 
@@ -87,11 +87,49 @@ def is_trade(msg):
     return msg["type"] == "trade"
 
 def print_trade(msg):
-    if mgs["symbol"] in ["VALE", "VALBZ"]:
+    if msg["symbol"] in ["VALE", "VALBZ"]:
         print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
 
 
-class trade_history
+class trades_histories:
+    def __init__(self):
+        self.securities = {}
+        self.names = ["BOND", "GS", "MS", "WFC", "XLF", "VALBZ", "VALE"]
+        for name in self.names:
+            self.securities[name] = trade_history()
+    def add(self, msg):
+        self.securities[msg["symbol"]].add(msg)
+
+    def wavg(self):
+        print("sell_wavg", "buy_wavg")
+        for name in self.names:
+            a = self.securities[name].wavg()
+            print(name, a)
+
+
+class trade_history:
+    def __init__(self):
+        self.buys = []
+        self.sells = []
+
+    def add(self, msg):
+        if msg["dir"] == "buy":
+            self.buy += [(msg["price"], msg["size"]) ]
+
+        else:
+            self.sell += [(msg["price"], msg["size"])]
+
+    def get_wavg(self):
+        return wavg(self.sells), wavg(self.buys)
+
+
+def wavg(xs):
+    weight = sum(map(lambda x, y : y, xs))
+    suma = sum(map(lambda x, y : x * y, xs))
+    return 1.0 * suma / weight
+    
+
+
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
@@ -113,14 +151,14 @@ def main():
 
     while True:
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
-        message = read_from_exchange(exchange)
+        msg = read_from_exchange(exchange)
 
         if is_trade(msg):
             print_trade(msg)
 
         # clearing IDs
-        if getoutid(message):
-            outd[getoutid(message)] = True
+        if getoutid(msg):
+            outd[getoutid(msg)] = True
 
 
 
