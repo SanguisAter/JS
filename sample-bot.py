@@ -175,7 +175,7 @@ class trade_history:
     def predict_sell(self):
         return self.wavg() + 0.1 * self.delta()
 
-    def predict_buy(self)
+    def predict_buy(self):
         return self.wavg() - 0.1 * self.delta()
 
 
