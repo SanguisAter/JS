@@ -71,6 +71,10 @@ def cancel(ID):
 
 def getoutid(request):
     if request["type"] in ["out", "reject"]:
+        if request["type"] in ["reject"]:
+            print(request)
+            # while True:
+            #     pass
         return request["order_id"]
     else:
         False
@@ -113,22 +117,22 @@ class trading_bot:
         self.limit = 5
 
 
-    def trade():
+    def trade(self):
         symbol = self.symbol
-        if count_alive(self.sell_ids) > self.limit:
+        if count_alive(self.sell_ids) < self.limit:
             price = histories.securities[symbol].predict_sell()
             sell_id = sell(symbol,price,5)
-            #print("sell", sell_id)
-        if count_alive(self.buy_ids) > self.limit
+            # print("sell", sell_id)
+            self.sell_ids += [sell_id]
+        if count_alive(self.buy_ids) < self.limit:
             price = histories.securities[symbol].predict_buy()
             buy_id = buy(symbol,price,5)
-            #print("buy", buy_id)
-        self.sell_ids += [sell_id]
-        self.buy_ids += [buy_id]
+            # print("buy", buy_id)
+            self.buy_ids += [buy_id]
 
 
 def count_alive(ids):
-    return sum(map(lambda x : outd[x] != True))
+    return sum(map(lambda x : outd[x] != True), ids)
 
 class trades_histories:
     def __init__(self):
@@ -217,12 +221,21 @@ class trade_history:
 
     def get_min(self):
         return min(self.trade)
+    
+    def get_almost_min(self):
+        return min(self.trade[-100:])
+    
+    def get_almost_max(self):
+        return max(self.trade[-100:])
 
     def get_max(self):
         return max(self.trade)
 
     def get_delta(self):
         return max(fst(self.trade)) - min(fst(self.trade))
+    
+    def get_current_delta(self):
+        return max(fst(self.trade[-100:])) - min(fst(self.trade[-100:]))
 
     def predict_sell(self):
         return self.get_wavg() + 0.1 * self.get_delta()
