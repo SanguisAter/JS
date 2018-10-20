@@ -19,7 +19,6 @@ team_name="FLYINGCIRCUS"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
 test_mode = "-test" in sys.argv
-print(sys.argv)
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
@@ -31,7 +30,7 @@ prod_exchange_hostname="production"
 
 port=25000 + (test_exchange_index if test_mode else 0)
 exchange_hostname = "test-exch-" + team_name if test_mode else prod_exchange_hostname
-
+outd = defaultdict(lambda : False)
 
 __ID = 1
 def next():
@@ -87,8 +86,8 @@ def is_trade(msg):
     return msg["type"] == "trade"
 
 def print_trade(msg):
-    if msg["symbol"] in ["VALE", "VALBZ"]:
-        print(msg["symbol"], msg["dir"], msg["price"], msg["size"])
+    if msg["symbol"] in ["VALE", "VALBZ","BOND"]:
+        print (msg)
 
 
 class trades_histories:
@@ -130,6 +129,9 @@ def wavg(xs):
     
 
 
+=======
+
+>>>>>>> 6c2e057d6182baad62533d6b3ddf1d4deabb6769
 
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
@@ -138,7 +140,7 @@ BUY = "BUY"
 SELL = "SELL"
 
 def main():
-    outd = defaultdict(lambda : False)
+    
     write_to_exchange(exchange, {"type": "hello", "team": team_name.upper()})
     hello_from_exchange = read_from_exchange(exchange)
     # A common mistake people make is to call write_to_exchange() > 1
@@ -153,8 +155,8 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         msg = read_from_exchange(exchange)
 
-        if is_trade(msg):
-            print_trade(msg)
+        if is_trade(message):
+            print_trade(message)
 
         # clearing IDs
         if getoutid(msg):
