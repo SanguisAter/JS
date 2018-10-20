@@ -213,7 +213,7 @@ def main():
             histories.add(msg)
             print_trade(msg)
 
-        if len(histories.securities["VALBZ"].trades) > 20:
+        if len(histories.securities["VALBZ"].trade) > 20:
             pass
 
 
