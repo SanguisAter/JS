@@ -214,8 +214,9 @@ def main():
         if is_trade(msg):
             counter += 1
             histories.add(msg)
-            if counter % 1000 == 0:
+            if counter % 100 == 0:
                 print_trade(msg)
+                print(histories.securities["VALBZ"].wavg())
                 
 
         if len(histories.securities["VALBZ"].trade) > 20:
