@@ -212,6 +212,9 @@ class trade_history:
 
     def add(self, msg):
         self.trade += [(msg["price"], msg["size"]) ]
+        if self.symbol in ["MS", "GS", "WFC"]:
+            self.trade = self.trade[-10:]
+
 
     def get_wavg(self):
         return wavg(self.trade)
@@ -227,12 +230,19 @@ class trade_history:
 
     def predict_sell(self):
         mult = 0.1
+        add = 0
         if self.symbol in ["MS", "GS", "WFC"]:
-            mult = 0.01
-        return self.get_wavg() + mult * self.get_delta()
+            mult = 0.0
+            add = 3
+        return self.get_wavg() + mult * self.get_delta() + add
 
     def predict_buy(self):
-        return self.get_wavg() - mult * self.get_delta()
+        mult = 0.1
+        add = 0
+        if self.symbol in ["MS", "GS", "WFC"]:
+            mult = 0.0
+            add = 3
+        return self.get_wavg() - mult * self.get_delta() - add
 
 
 def wavg(xs):
@@ -271,10 +281,11 @@ def main():
     while True:
         #bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         if len(histories.securities["VALBZ"].trade) > 20:
+            pass
             #vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
             #bot_valbz.trade()
-        if len(histories.securities["XLF"].trade) > 20:
-            bot.trade()
+        #if len(histories.securities["XLF"].trade) > 20:
+        #    bot.trade()
         if len(histories.securities["MS"].trade) > 20:
             bot_ms.trade()
         if len(histories.securities["GS"].trade) > 20:
