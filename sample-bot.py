@@ -217,7 +217,7 @@ def main():
             histories.add(msg)
             if counter % 100 == 0:
                 print_trade(msg)
-                print(histories.securities["VALBZ"].wavg())
+                print(histories.securities["VALBZ"].get_wavg())
                 
 
         if len(histories.securities["VALBZ"].trade) > 20:
@@ -233,8 +233,8 @@ def main():
 
 if __name__ == "__main__":
     exchange = connect()
-    try:
-        main()
-    except:
-        histories.print_all()
+    # try:
+    main()
+    # except:
+        # histories.print_all()
     histories.print_all()
