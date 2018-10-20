@@ -36,7 +36,7 @@ __ID = 1
 def next():
     global __ID
     __ID += 1
-    return randrange(2**16)
+    return randrange(2**31)
 
 # ~~~~~============== NETWORKING CODE ==============~~~~~
 def connect():
