@@ -65,7 +65,7 @@ def buy(symbol, price, size):
     return ID
 
 def getoutid(request):
-    if request["type"] == "out":
+    if request["type"] in ["out","reject"]:
         return request["order_id"]
     else:
         False
@@ -74,10 +74,10 @@ def getoutid(request):
 def bond_trade(sell_id, buy_id):
     global outd
     if outd[sell_id]:
-        sell_id = sell("BOND",1001,20)
+        sell_id = sell("BOND",1001,1)
         print("sell", sell_id)
     if outd[buy_id]:
-        buy_id = buy("BOND",999,20)
+        buy_id = buy("BOND",999,1)
         print("buy", buy_id)
     return sell_id, buy_id
 
