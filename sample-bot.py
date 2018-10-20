@@ -5,7 +5,7 @@
 # 2) Change permissions: chmod +x bot.py
 # 3) Run in loop: while true; do ./bot.py; sleep 1; done
 
-#from __future__ import print_function
+#f  rom __future__ import print_function
 
 import sys
 import socket
@@ -24,6 +24,7 @@ test_mode = "-test" in sys.argv
 # 0 is prod-like
 # 1 is slower
 # 2 is empty
+# this is my provate comment111 
 test_exchange_index=0
 prod_exchange_hostname="production"
 
