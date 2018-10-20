@@ -10,20 +10,20 @@
 import sys
 import socket
 import json
-import defaultdict
+from collections inport defaultdict
 
 # ~~~~~============== CONFIGURATION  ==============~~~~~
 # replace REPLACEME with your team name!
 team_name="FLYINGCIRCUS"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
-test_mode = True
+test_mode = "-test" in sys.argv
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
 # 1 is slower
 # 2 is empty
-test_exchange_index=2
+test_exchange_index=0
 prod_exchange_hostname="production"
 
 port=25000 + (test_exchange_index if test_mode else 0)
