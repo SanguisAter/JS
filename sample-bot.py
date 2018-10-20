@@ -197,11 +197,7 @@ def wavg(xs):
     weight = sum(map(lambda x : x[1], xs))
     suma = sum(map(lambda x : x[0] * x[1], xs))
     return 1.0 * suma / weight
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 7c1ddece1fd5efa24d96e688750809826231c6e6
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
 
