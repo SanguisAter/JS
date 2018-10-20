@@ -134,7 +134,7 @@ def count_alive(ids):
 class trades_histories:
     def __init__(self):
         self.securities = {}
-        self.names = ["BOND", "GS", "MS", "WFC", "XLF", "VALBZ", "VALE"]
+        self.names = ["BOND", "GS", "MS", "WFC", "VALBZ", "VALE", "XLF"]
         for name in self.names:
             self.securities[name] = trade_history()
     def add(self, msg):
@@ -167,15 +167,21 @@ class trades_histories:
     def predict_sell(self):
         ret = {}
         for name in self.names:
-            ret[name] = self.securities[name].predict_sell()
-        return int(ret)
+            if name == "XLF":
+                ret[name] = 3 * ret["BOND"] + 2 * ret["GS"] + 3 * ret["MS"] + 2 * ret["WFC"] / 10
+            else:
+                ret[name] = self.securities[name].predict_sell()
+        return ret
 
 
     def predict_buy(self):
         ret = {}
         for name in self.names:
-            ret[name] = self.securities[name].predict_buy()
-        return int(ret)
+            if name == "XLF":
+                ret[name] = 3 * ret["BOND"] + 2 * ret["GS"] + 3 * ret["MS"] + 2 * ret["WFC"] / 10
+            else:
+                ret[name] = self.securities[name].predict_buy()
+        return ret
 
     def print_all(self):
         print("wavg", self.wavg())
@@ -234,7 +240,7 @@ BUY = "BUY"
 SELL = "SELL"
 
 histories = trades_histories()
-bot = trading_bot("MS")
+bot = trading_bot("XLF")
 
 def main():
     
@@ -256,8 +262,7 @@ def main():
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
         if len(histories.securities["VALBZ"].trade) > 20:
             vale_sell_id, vale_buy_id = vale_trade(vale_sell_id, vale_buy_id)
-        if len(histories.securities["MS"].trade) > 20:
-            # print("ping")
+        if len(histories.securities["XLF"].trade) > 20:
             bot.trade()
 
 
