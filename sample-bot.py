@@ -19,6 +19,7 @@ team_name="FLYINGCIRCUS"
 # This variable dictates whether or not the bot is connecting to the prod
 # or test exchange. Be careful with this switch!
 test_mode = "-test" in sys.argv
+print(sys.argv)
 
 # This setting changes which test exchange is connected to.
 # 0 is prod-like
@@ -91,8 +92,13 @@ def print_trade(msg):
     #if mgs["symbol"] ==
 
 
+class trade_history
+
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
+
+BUY = "BUY"
+SELL = "SELL"
 
 def main():
     
@@ -103,8 +109,8 @@ def main():
     # Since many write messages generate marketdata, this will cause an
     # exponential explosion in pending messages. Please, don't do that!
     print("The exchange replied:", hello_from_exchange, file=sys.stderr)
-    bond_sell_id = sell("BOND",1001,20)
-    bond_buy_id = buy("BOND",999,20)
+    bond_sell_id = sell("BOND",1001,1)
+    bond_buy_id = buy("BOND",999,1)
 
     while True:
         bond_sell_id, bond_buy_id = bond_trade(bond_sell_id, bond_buy_id)
