@@ -71,7 +71,8 @@ def getoutid(request):
         False
 
 
-def bond_trade(sell_ids, buy_ids):
+
+def bond_trade(sell_id, buy_id):
     global outd
     if outd[sell_id]:
         sell_id = sell("BOND",1001,1)
@@ -81,17 +82,6 @@ def bond_trade(sell_ids, buy_ids):
         #print("buy", buy_id)
     return sell_id, buy_id
 
-def vale_trade(sell_id, buy_id):
-    global outd
-    if outd[sell_id]:
-        price = histories.securities[VALE].predict_sell()
-        sell_id = sell("VALE",price,5)
-        #print("sell", sell_id)
-    if outd[buy_id]:
-        price = histories.securities[VALE].predict_buy()
-        buy_id = buy("VALE",price,5)
-        #print("buy", buy_id)
-    return sell_id, buy_id
 
 def is_trade(msg):
     return msg["type"] == "trade"
@@ -100,6 +90,27 @@ def print_trade(msg):
     if msg["symbol"] in ["VALE", "VALBZ","BOND"]:
         print(msg["symbol"], msg["price"], msg["size"])
 
+class trading_bot:
+    def __init__:
+        self.sell_ids = []
+        self.buy_ids = []
+
+    def vale_trade():
+        global outd
+        if outd[sell_id]:
+            price = histories.securities[VALE].predict_sell()
+            sell_id = sell("VALE",price,5)
+            #print("sell", sell_id)
+        if outd[buy_id]:
+            price = histories.securities[VALE].predict_buy()
+            buy_id = buy("VALE",price,5)
+            #print("buy", buy_id)
+        self.sell_ids += [sell_id]
+        self.buy_ids += [buy_id]
+
+
+def count_alive(ids):
+    return sum(map(lambda x : outd[x] == False))
 
 class trades_histories:
     def __init__(self):
@@ -197,11 +208,6 @@ def wavg(xs):
     weight = sum(map(lambda x : x[1], xs))
     suma = sum(map(lambda x : x[0] * x[1], xs))
     return 1.0 * suma / weight
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 7c1ddece1fd5efa24d96e688750809826231c6e6
 # ~~~~~============== MAIN LOOP ==============~~~~~
 
 
